@@ -1,3 +1,5 @@
+//dto包中放需要走网络的类
+
 package com.example.community.dto;
 
 
