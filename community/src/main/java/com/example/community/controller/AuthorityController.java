@@ -14,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 
@@ -38,8 +40,14 @@ public class AuthorityController {
     private String redirectUrl;
 
 
+    //HttpServletRequest是浏览器给服务器发到请求，所以可以得到session和cookie,
+    // HttpServletResponse是服务器返回给浏览器到，所以可以添加cookice到浏览器
     @GetMapping("/callback")
-    public String callback(@RequestParam(name="code") String code, @RequestParam(name="state") String state, HttpServletRequest request, Model model) {
+    public String callback(@RequestParam(name="code") String code
+            , @RequestParam(name="state") String state
+            , HttpServletRequest request
+            ,HttpServletResponse response
+            , Model model) {
 
 
 //        Client ID
@@ -50,26 +58,26 @@ public class AuthorityController {
 //        http://localhost:8080/callback
 
 
-
         AccessDTO accessDTO = new AccessDTO(clientId,clientSecret,code,redirectUrl,state);
         GitHubUser gitHubUser = gitHubProvider.getUser(gitHubProvider.getAccessToken(accessDTO)) ;
 
-        System.out.println(gitHubUser.getName());
-
-
-        //登陆成功
+        //得到github用户登陆成功
         if(gitHubUser!=null){
 
-            //把用户信息存储到seesion中
-            request.getSession().setAttribute("user",gitHubUser);
 
-            //把github用户存储到数据库中
+            //随机生成一个token
+            String token = UUID.randomUUID().toString();
+
+            //把用户信息存储到数据库中
             Long creatTime = System.currentTimeMillis();
-            userMapper.InsertUser(new User(gitHubUser.getName(),gitHubUser.getId()+"",UUID.randomUUID().toString(),creatTime,creatTime));
+            userMapper.InsertUser(new User(gitHubUser.getName(),gitHubUser.getId()+"",token,creatTime,creatTime));
+
+
+            //把用户信息存储到cookie中
+            response.addCookie(new Cookie("token",token));
 
 
             //重定向，如果不加redirect，那么浏览器的url不会改变
-            System.out.println("用户存在");
             return  "redirect:/index";
 
         //登陆失败

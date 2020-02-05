@@ -67,4 +67,7 @@ public class User {
         this.gmtCreate = gmtCreate;
         this.gmtModitied = gmtModitied;
     }
+
+    public User() {
+    }
 }
