@@ -70,7 +70,7 @@ public class AuthorityController {
 
             //把用户信息存储到数据库中
             Long creatTime = System.currentTimeMillis();
-            userMapper.InsertUser(new User(gitHubUser.getName(),gitHubUser.getId()+"",token,creatTime,creatTime));
+            userMapper.InsertUser(new User(gitHubUser.getName(),gitHubUser.getId()+"",token,creatTime,creatTime,gitHubUser.getAvatarUrl()));
 
 
             //把用户信息存储到cookie中

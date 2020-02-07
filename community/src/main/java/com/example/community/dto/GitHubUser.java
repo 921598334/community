@@ -1,40 +1,19 @@
 package com.example.community.dto;
 
+
+import lombok.Data;
+
+@Data
 public class GitHubUser {
 
     private String name;
     //githun上的唯一标示
     private Long id;
+    //简介
     private String bio;
 
+    //fastJson插件可以自动把下划线映射为驼峰命令，所以可以不用修改为与数据库对应的下划线命令
+    private String avatarUrl;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public GitHubUser(String name, Long id, String bio) {
-        this.name = name;
-        this.id = id;
-        this.bio = bio;
-    }
 }
