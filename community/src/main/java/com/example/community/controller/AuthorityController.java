@@ -70,11 +70,18 @@ public class AuthorityController {
 
             //把用户信息存储到数据库中
             Long creatTime = System.currentTimeMillis();
-            userMapper.InsertUser(new User(gitHubUser.getName(),gitHubUser.getId()+"",token,creatTime,creatTime,gitHubUser.getAvatarUrl()));
+
+            User newUser = new User(gitHubUser.getName(),gitHubUser.getId()+"",token,creatTime,creatTime,gitHubUser.getAvatarUrl());
+
+            userMapper.InsertUser(newUser);
 
 
             //把用户信息存储到cookie中
             response.addCookie(new Cookie("token",token));
+
+
+            //把user放入session中，以便能在index中显示
+            request.getSession().setAttribute("user",newUser);
 
 
             //重定向，如果不加redirect，那么浏览器的url不会改变

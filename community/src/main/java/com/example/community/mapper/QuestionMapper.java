@@ -4,6 +4,7 @@ package com.example.community.mapper;
 import com.example.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface QuestionMapper {
     List<Question> getList();
 
 
-    //关联查询
+    //根据用户id得到该用户的问题
+    @Select("select * from question where creator=#{id}")
+    List<Question> getListByUserID(@Param("id") Integer id);
 }

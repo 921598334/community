@@ -69,31 +69,8 @@ public class PublishController {
         }
 
 
-        //通过cookie得到在数据库中得到用户
-        Cookie[] cookies = request.getCookies();
-
-        if(cookies==null || cookies.length==0)
-        {
-            System.out.println("token不存在");
-            return "index";
-        }
-        User user = null;
-        for (Cookie cookie : cookies) {
-
-            if(cookie.getName().equals("token")){
-                //在数据库中看看有没有token
-                user = userMapper.findByToken(cookie.getValue()) ;
-
-
-                if(user == null){break;}
-
-                //把用户信息存储到seesion中，然后在前段判断这个session中有没有这个用户，如果没有就显示登陆
-                request.getSession().setAttribute("user",user);
-                System.out.println("在数据库中找到token");
-                break;
-            }
-
-        }
+        //在进入该页面时，拦截器会首先进行判断，如果有用户了，用户信息会被放在session中
+        User user = (User)request.getSession().getAttribute("user");
 
         //如果用户没有登陆，就返回
         if(user == null){

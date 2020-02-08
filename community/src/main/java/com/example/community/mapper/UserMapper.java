@@ -20,7 +20,7 @@ public interface UserMapper {
 
 
     //如果方法中是一个自定义到类，可以不用Param
-    @Insert("insert into user(name,account_id,token,gmt_create,gmt_modified,avatar_url) values (#{name},#{accountId},#{token},#{gmtCreate},#{gmtModitied},#{avatarUrl})")
+    @Insert("insert into user(name,account_id,token,gmt_create,gmt_modified,avatar_url) values (#{name},#{account_id},#{token},#{gmt_create},#{gmt_modified},#{avatar_url})")
     void InsertUser(User user);
 
 //    //如果方法中不是一个自定义到类，要Param

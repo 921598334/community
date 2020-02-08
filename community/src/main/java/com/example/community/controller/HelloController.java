@@ -38,42 +38,15 @@ public class HelloController {
                            @RequestParam(name="size",defaultValue="5") Integer size
     ) {
 
-        //通过cookie得到在数据库中得到用户
-        Cookie[] cookies = request.getCookies();
-
-        if(cookies==null || cookies.length==0)
-        {
-            System.out.println("token不存在");
-            return "index";
-        }
-
-        for (Cookie cookie : cookies) {
-            if(cookie.getName().equals("token")){
-                //在数据库中看看有没有token
-
-               User  user = userMapper.findByToken(cookie.getValue()) ;
-
-               if(user == null){break;}
-
-                //把用户信息存储到seesion中，然后在前段判断这个session中有没有这个用户，如果没有就显示登陆
-                request.getSession().setAttribute("user",user);
-                System.out.println("在数据库中找到token");
-                break;
-            }
-
-        }
 
 
-
-        //从数据库中得到所有的提问列表与创建者头像
-        //List<QuestionDTO> questionList = questionService.getList(page,size);
 
         //从数据库中得到分页的数据
         PageDTO pageDTO = questionService.getList(page,size);
 
         model.addAttribute("pageDTO",pageDTO);
 
-        //这个表示寻找index的页面进行显示
+        //这个表示寻找index的页面进行显示,不用redirect表示返回页面（浏览器的url不会修改）,同时不会走controller,也就意味着页面中的变量可能没有值
         return "index";
     }
 
