@@ -26,6 +26,10 @@ public class QuestionController {
 
         QuestionDTO questionDTO = questionDTOService.getById(id);
 
+        //添加观看人数
+         questionDTOService.addView(questionDTO);
+
+
         model.addAttribute("question",questionDTO);
 
         return "question";

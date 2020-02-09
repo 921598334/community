@@ -14,14 +14,25 @@
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起</h2>
             <hr>
 
+
+
+
+
+
             <form action="/publish" method="post">
-                <input type="hidden" name="id">
+
                 <div class="form-group">
                     <label for="title">问题标题（简单扼要）:</label>
                     <input type="text" class="form-control" th:value="${title}" id="title" name="title"
                            placeholder="问题标题……"
                            autocomplete="off">
+
+
                 </div>
+
+
+                <input type="hidden"  name="id" th:value="${id}" />
+
                 <div class="form-group" id="question-editor">
                     <label for="description">问题补充 (必填，请参照右侧提示):</label>
                     <textarea name="description" id="description" th:text="${description}" style="display:none;"
@@ -29,6 +40,13 @@
                               cols="30"
                               rows="10"></textarea>
                 </div>
+
+
+
+
+
+
+
                 <script type="text/javascript">
                     $(function () {
                         var editor = editormd("question-editor", {
@@ -44,6 +62,7 @@
                         });
                     });
                 </script>
+
                 <div class="form-group">
                     <label for="tag">添加标签:</label>
                     <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag"
@@ -73,6 +92,7 @@
                     </div>
                 </div>
 
+
                 <div class="container-fluid main ">
                     <div class="row">
                         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
@@ -80,6 +100,7 @@
                             <div class="alert alert-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${error!=null}"  th:text="${error}" >
                             </div>
                         </div>
+
                         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
 
                             <button type="submit" class="btn btn-success btn-publish ">
@@ -89,7 +110,15 @@
                     </div>
                 </div>
 
+
             </form>
+
+
+
+
+
+
+
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <h3>问题发起指南</h3>

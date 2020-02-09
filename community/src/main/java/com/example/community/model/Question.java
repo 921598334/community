@@ -27,9 +27,9 @@ public class Question {
         this.gmt_create = gmt_create;
         this.gmt_modified = gmt_modified;
         this.creator = creator;
-        this.view_count = 0;
-        this.comment_count = 0;
-        this.like_count = 0;
+        this.view_count = view_count;
+        this.comment_count = comment_count;
+        this.like_count = like_count;
     }
 
 

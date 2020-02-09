@@ -1,6 +1,7 @@
 package com.example.community.service;
 
 
+import com.example.community.advice.CustomizeException;
 import com.example.community.dto.PageDTO;
 import com.example.community.dto.QuestionDTO;
 import com.example.community.mapper.QuestionMapper;
@@ -157,8 +158,18 @@ public class QuestionDTOService {
 
         Question question = questionMapper.getById(id);
 
+        //如果没有找到，就跑出异常交给处理异常的类进行处理然后返回页面
+        if(question==null){
+            throw  new CustomizeException("这个问题不存在");
+        }
+
+
         //在聊天记录中查询用户
         User user = userMapper.findById(question.getCreator());
+
+        if(user==null){
+            throw  new CustomizeException("这篇文章的用户不存在");
+        }
 
         //把QuestionDTO和User中的相关属性拷贝到QuestionDTO中
         QuestionDTO questionDTO= new QuestionDTO();
@@ -167,5 +178,18 @@ public class QuestionDTOService {
 
 
         return  questionDTO;
+    }
+
+
+    //添加阅读数
+    public void addView(QuestionDTO questionDTO){
+
+        questionDTO.setView_count(questionDTO.getView_count()+1);
+
+        Question question = new Question(questionDTO.getTitle(),questionDTO.getDescription(),questionDTO.getTag(),questionDTO.getGmt_create(),questionDTO.getGmt_modified(),questionDTO.getCreator(),questionDTO.getView_count(),questionDTO.getComment_count(),questionDTO.getLike_count());
+        question.setId(questionDTO.getId());
+
+        questionMapper.update(question);
+
     }
 }
