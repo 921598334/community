@@ -6,6 +6,7 @@ import com.example.community.dto.GitHubUser;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
 import com.example.community.provider.GitHubProvider;
+import com.example.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
@@ -21,11 +22,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 
+//github授权登陆,与退出登陆
 @Controller
 public class AuthorityController {
 
     @Autowired
     private GitHubProvider gitHubProvider;
+
+    @Autowired
+    UserService userService;
+
 
     @Autowired
     private UserMapper userMapper;
@@ -68,19 +74,21 @@ public class AuthorityController {
             //随机生成一个token
             String token = UUID.randomUUID().toString();
 
-            //把用户信息存储到数据库中
+            //创建时间
             Long creatTime = System.currentTimeMillis();
 
             User newUser = new User(gitHubUser.getName(),gitHubUser.getId()+"",token,creatTime,creatTime,gitHubUser.getAvatarUrl());
 
-            userMapper.InsertUser(newUser);
+
+            //在数据库中检查这个github用户是否存在，不存在就创建，否则就更新
+            newUser = userService.createOrUpdate(newUser);
 
 
             //把用户信息存储到cookie中
             response.addCookie(new Cookie("token",token));
 
 
-            //把user放入session中，以便能在index中显示
+            //把user放入session中，以便能在index中显示,因为拦截器不会拦截index页面，所以需要在这里添加session
             request.getSession().setAttribute("user",newUser);
 
 
@@ -94,4 +102,27 @@ public class AuthorityController {
         }
 
     }
+
+
+
+
+    //退出登陆时需要移除cookie与session
+    @GetMapping("/logout")
+    public String logout(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ){
+
+        request.getSession().removeAttribute("user");
+
+        //java删除cookie的方法
+        Cookie cookie = new Cookie("token",null);
+        response.addCookie(cookie);
+        cookie.setMaxAge(0);
+
+
+        System.out.println("已经退出登陆");
+        return  "redirect:/index";
+    }
+
 }

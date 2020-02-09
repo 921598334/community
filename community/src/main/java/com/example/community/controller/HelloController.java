@@ -2,23 +2,17 @@ package com.example.community.controller;
 
 
 import com.example.community.dto.PageDTO;
-import com.example.community.dto.QuestionDTO;
-import com.example.community.mapper.QuestionMapper;
 import com.example.community.mapper.UserMapper;
-import com.example.community.model.Question;
-import com.example.community.model.User;
-import com.example.community.service.QuestionService;
+import com.example.community.service.QuestionDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
 
+//主界面
 @Controller
 public class HelloController {
 
@@ -27,7 +21,7 @@ public class HelloController {
     private UserMapper userMapper;
 
     @Autowired
-    private QuestionService questionService;
+    private QuestionDTOService questionDTOService;
 
     //每次进入index页面是，首先判断浏览器上到cookie到token和能不能在数据库中找到对应到用户，如果有就直接登陆
     //如果在数据中没有，或者cookie过期就显示登陆按钮
@@ -42,7 +36,7 @@ public class HelloController {
 
 
         //从数据库中得到分页的数据
-        PageDTO pageDTO = questionService.getList(page,size);
+        PageDTO pageDTO = questionDTOService.getList(page,size);
 
         model.addAttribute("pageDTO",pageDTO);
 

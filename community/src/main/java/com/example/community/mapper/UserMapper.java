@@ -8,8 +8,6 @@ import java.util.Map;
 @Mapper
 public interface UserMapper {
 
-
-
 //    User的属性
 //    private Integer id;
 //    private String name;
@@ -21,7 +19,7 @@ public interface UserMapper {
 
     //如果方法中是一个自定义到类，可以不用Param
     @Insert("insert into user(name,account_id,token,gmt_create,gmt_modified,avatar_url) values (#{name},#{account_id},#{token},#{gmt_create},#{gmt_modified},#{avatar_url})")
-    void InsertUser(User user);
+    void insertUser(User user);
 
 //    //如果方法中不是一个自定义到类，要Param
 //    @Select("select * from user where token= #{token}")
@@ -33,4 +31,12 @@ public interface UserMapper {
 
     @Select("select * from user where id= #{id}")
     User findById(@Param("id") Integer id);
+
+    //这个用来检查github用户是否存在
+    @Select("select * from user where account_id= #{account_id}")
+    User findByAcountId(@Param("account_id") String account_id);
+
+    //更新用户
+    @Update("UPDATE user SET name = #{name},token=#{token},gmt_modified=#{gmt_modified},avatar_url=#{avatar_url} where account_id = #{account_id}")
+    void update(User user);
 }

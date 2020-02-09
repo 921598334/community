@@ -20,7 +20,7 @@ import java.util.List;
 
 //单需要Mapper中的多个对象进行组装使用的时候，可以在Service进行，假如service标签后，可以用Autowired进行注入
 @Service
-public class QuestionService {
+public class QuestionDTOService {
 
 
     @Autowired
@@ -71,6 +71,12 @@ public class QuestionService {
 
             User user = userMapper.findById(question.getCreator());
 
+            //表示这篇文章没有用户创建（或者该用户已经不存在数据库中了）
+            if(user == null){
+                System.out.println("有篇文章没有用户创建");
+                continue;
+            }
+
             //把QuestionDTO和User中的相关属性拷贝到QuestionDTO中
             QuestionDTO questionDTO= new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
@@ -100,7 +106,7 @@ public class QuestionService {
     }
 
 
-    //根据用户id得到当前用户的问题
+    //根据用户id得到当前用户的问题,并且分页显示
     public PageDTO getList(Integer id,Integer page,Integer size) {
 
         PageHelper.startPage(page,size);
@@ -143,5 +149,23 @@ public class QuestionService {
 
         return  pageDTO;
 
+    }
+
+
+    //根据问题id得到一个问题，并且和用户绑定为QuestionDTO
+    public QuestionDTO getById(Integer id){
+
+        Question question = questionMapper.getById(id);
+
+        //在聊天记录中查询用户
+        User user = userMapper.findById(question.getCreator());
+
+        //把QuestionDTO和User中的相关属性拷贝到QuestionDTO中
+        QuestionDTO questionDTO= new QuestionDTO();
+        BeanUtils.copyProperties(question,questionDTO);
+        questionDTO.setUser(user);
+
+
+        return  questionDTO;
     }
 }

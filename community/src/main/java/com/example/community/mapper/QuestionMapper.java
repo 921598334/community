@@ -23,4 +23,9 @@ public interface QuestionMapper {
     //根据用户id得到该用户的问题
     @Select("select * from question where creator=#{id}")
     List<Question> getListByUserID(@Param("id") Integer id);
+
+
+    //根据问题的id得到数据
+    @Select("select * from question where id=#{id}")
+    Question getById(Integer id);
 }

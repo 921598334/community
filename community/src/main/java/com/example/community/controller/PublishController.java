@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Map;
 
+
+//发布文章相关
 @Controller
 public class PublishController {
 
@@ -34,7 +36,6 @@ public class PublishController {
 
         return "publish";
     }
-
 
 
     //用户发帖时的post请求时
@@ -68,7 +69,6 @@ public class PublishController {
             return "publish";
         }
 
-
         //在进入该页面时，拦截器会首先进行判断，如果有用户了，用户信息会被放在session中
         User user = (User)request.getSession().getAttribute("user");
 
@@ -80,8 +80,6 @@ public class PublishController {
 
         //存在用户时就把用户的提问添加到数据库中,然后返回首页
         Long time = System.currentTimeMillis();
-
-
 
         questionMapper.create(new Question(title,description,tag,time,time,user.getId(),0,0,0));
         return  "redirect:/index";
