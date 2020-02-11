@@ -22,8 +22,8 @@ function comment2target(targetId, type, content) {
         url: "/comment",
         contentType: 'application/json',
         data: JSON.stringify({
-            "parentId": targetId,
-            "content": content,
+            "parent_id": targetId,
+            "comment": content,
             "type": type
         }),
         success: function (response) {
@@ -31,7 +31,9 @@ function comment2target(targetId, type, content) {
                 window.location.reload();
             } else {
                 if (response.code == 2003) {
+                    // 没有登陆时，弹出对话框询问是否需要登陆，
                     var isAccepted = confirm(response.message);
+                    //点击确定时进行页面跳转
                     if (isAccepted) {
                         window.open("https://github.com/login/oauth/authorize?client_id=2859958f9f059979ed3a&redirect_uri=" + document.location.origin + "/callback&scope=user&state=1");
                         window.localStorage.setItem("closable", true);

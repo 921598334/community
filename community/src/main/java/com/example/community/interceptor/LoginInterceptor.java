@@ -29,6 +29,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(cookies==null || cookies.length==0)
         {
             System.out.println("token不存在");
+            System.out.println("被拦截");
             return false;
         }
 
@@ -38,7 +39,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 
                 User user = userMapper.findByToken(cookie.getValue()) ;
 
-                if(user == null){return false;}
+                if(user == null){
+
+                    System.out.println("被拦截");
+                    return false;
+                }
 
                 //把用户信息存储到seesion中，然后在前段判断这个session中有没有这个用户，如果没有就显示登陆
                 request.getSession().setAttribute("user",user);
@@ -50,6 +55,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         System.out.println("被拦截");
         return false;
+
+        //return  true;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.community.mapper;
 
 
+import com.example.community.model.Comment;
 import com.example.community.model.Question;
 import org.apache.ibatis.annotations.*;
 
@@ -31,4 +32,9 @@ public interface QuestionMapper {
     //根据问题的id得到数据
     @Select("select * from question where id=#{id}")
     Question getById(Integer id);
+
+
+    //得到问题的所有回复,输入是问题的id，得到的是所有回复,type1是回复
+    @Select("select * from comment where parent_id= #{id} and type=1")
+    List<Comment> findCommentsById(@Param("id") Integer id);
 }
