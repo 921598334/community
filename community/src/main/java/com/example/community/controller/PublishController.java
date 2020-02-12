@@ -1,5 +1,7 @@
 package com.example.community.controller;
 
+import com.example.community.cache.TagCache;
+import com.example.community.dto.TagDTO;
 import com.example.community.mapper.QuestionMapper;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.Question;
@@ -17,6 +19,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -37,7 +42,10 @@ public class PublishController {
 
     //是get请求时渲染页面
     @GetMapping("/publish")
-    public String greeting(){
+    public String greeting(Model model){
+
+        //标签
+        model.addAttribute("tags",TagCache.get());
 
         return "publish";
     }
@@ -49,6 +57,9 @@ public class PublishController {
                          Model model,
                          HttpServletRequest request
     ){
+
+        //标签
+        model.addAttribute("tags",TagCache.get());
 
         //根据id从数据库中得到文章
         Question question = questionMapper.getById(id);
@@ -83,6 +94,7 @@ public class PublishController {
             @RequestParam(name="description") String description,
             @RequestParam(name="tag") String tag,
             @RequestParam(name="id") Integer id,
+
             HttpServletRequest request,
             Model model
     ){
@@ -93,6 +105,20 @@ public class PublishController {
         model.addAttribute("tag",tag);
         //id是隐藏属性，自由更新页面都时候才有
         model.addAttribute("id",id);
+
+        //得到所有正确的标签
+        List<TagDTO> standTagDTOs =  TagCache.get();
+        model.addAttribute("tags",standTagDTOs);
+        List<String> standTags = new ArrayList<>();
+        for(TagDTO tagDTO:standTagDTOs){
+
+            for(String s:tagDTO.getTags()){
+                standTags.add(s);
+            }
+        }
+
+
+
 
         //验证用户输入的是不是为空
         if(title==null || title == ""){
@@ -109,6 +135,19 @@ public class PublishController {
             model.addAttribute("error","标签不能为空");
             return "publish";
         }
+
+        //判断用户输入的标签集合有没有错误（用户数据的标签集合是否被包含）
+        String[] tags = tag.split(",");
+        //如果存在相同元素standTags只会保留相同的，然后判断standTags和tags是否相同
+        standTags.retainAll(Arrays.asList(tags));
+        if(!standTags.containsAll(Arrays.asList(tags))){
+            model.addAttribute("error","输入的标签有错误");
+            return "publish";
+        }
+
+
+
+
 
         //在进入该页面时，拦截器会首先进行判断，如果有用户了，用户信息会被放在session中
         User user = (User)request.getSession().getAttribute("user");

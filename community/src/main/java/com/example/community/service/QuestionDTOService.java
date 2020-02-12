@@ -58,7 +58,9 @@ public class QuestionDTOService {
     //分页显示
     public PageDTO getList(Integer page, Integer size) {
 
-        PageHelper.startPage(page,size);
+        String orderBy = "gmt_modified" + " desc";
+
+        PageHelper.startPage(page,size,orderBy);
         //得到分页的数据
         List<Question> currentQuestion =  questionMapper.getList();
         //得到分页信息（这个分页信息不完整，不是我们需要的）

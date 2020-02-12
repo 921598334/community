@@ -27,7 +27,6 @@
                            placeholder="问题标题……"
                            autocomplete="off">
 
-
                 </div>
 
 
@@ -40,10 +39,6 @@
                               cols="30"
                               rows="10"></textarea>
                 </div>
-
-
-
-
 
 
 
@@ -69,28 +64,34 @@
                            autocomplete="off"
                            placeholder="输入标签，以，号分隔"
                            onclick="showSelectTag()">
+
+
                     <div id="select-tag" class="publish-tag-tab">
+
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation"
-                               >
-                                <a  aria-controls="home" role="tab"
-                                   data-toggle="tab" ></a>
+                            <li role="presentation" th:each="selectCategory,selectCategoryStat: ${tags}"
+                                th:class="${selectCategoryStat.first ? 'active':''}">
+                                <a th:href="${'#'+selectCategory.className}" aria-controls="home" role="tab"
+                                   data-toggle="tab" th:text="${selectCategory.className}"></a>
                             </li>
                         </ul>
+
                         <div class="tab-content">
-                            <div role="tabpanel"
-                                >
+                            <div role="tabpanel" th:id="${selectCategory.className}" th:each="selectCategory: ${tags}" th:class="${selectCategoryStat.first ? 'active tab-pane':'tab-pane'}">
                                 <span>
-                                    <span >
+                                    <span th:each="selectTag: ${selectCategory.tags}">
                                     <span class="community-tag" onclick="selectTag(this)"
-                                          >
+                                          th:data-tag="${selectTag}"
+                                          th:text="${' '+selectTag}">
                                     </span>
                                 </span>
                                 </span>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
 
 
                 <div class="container-fluid main ">

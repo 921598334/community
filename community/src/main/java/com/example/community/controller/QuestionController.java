@@ -4,6 +4,7 @@ package com.example.community.controller;
 import com.example.community.dto.CommentDTO;
 import com.example.community.dto.QuestionDTO;
 import com.example.community.model.Comment;
+import com.example.community.model.Question;
 import com.example.community.service.QuestionDTOService;
 import com.example.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,11 @@ public class QuestionController {
         List<CommentDTO> comments = questionService.getCommentById(id);
         //得到回复下的评论数
         model.addAttribute("comments",comments);
+
+
+        //根据当前问题的标签得到所有的相关问题
+        List<Question> relatedQuestions = questionService.findQuestionsByTag(questionDTO.getTag(),questionDTO.getId());
+        model.addAttribute("relatedQuestions",relatedQuestions);
 
         return "question";
 

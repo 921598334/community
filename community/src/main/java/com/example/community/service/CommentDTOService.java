@@ -54,7 +54,7 @@ public class CommentDTOService {
             if(dbComment==null){
                 throw new CustomizeException("该回复不存在，无法添加评论");
             }
-            commentMapper.insertComment(comment);
+
         }else
         {
             //回复问题,要首先判断该问题是否存在,需要根据评论的父id去得到问题

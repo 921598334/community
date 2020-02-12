@@ -100,4 +100,12 @@ public class QuestionService {
     }
 
 
+    //根据当前问题的tag得到相关的问题,但是排除该id对应的问题
+    public List<Question> findQuestionsByTag(String tag,Integer id){
+
+        String reTag = tag.replace(',','|');
+        return questionMapper.findQuestionsByTag(reTag,id);
+    }
+
+
 }

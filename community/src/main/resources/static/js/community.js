@@ -11,6 +11,9 @@ function post() {
     comment2target(questionId, 1, content);
 }
 
+
+
+
 function comment2target(targetId, type, content) {
     if (!content) {
         alert("不能回复空内容~~~");
@@ -47,9 +50,11 @@ function comment2target(targetId, type, content) {
     });
 }
 
+//提交问题时的评论
 function comment(e) {
+    //这个是问题的id
     var commentId = e.getAttribute("data-id");
-    var content = $("#input-" + commentId).val();
+    var content = $("#comment-" + commentId).val();
     comment2target(commentId, 2, content);
 }
 
@@ -119,17 +124,28 @@ function collapseComments(e) {
     }
 }
 
+//点击标签输入框时展示分类标签
 function showSelectTag() {
     $("#select-tag").show();
 }
 
+//点击标签
 function selectTag(e) {
+    //得到点击的标签值
     var value = e.getAttribute("data-tag");
+
+    //标签输入框当前的值
     var previous = $("#tag").val();
+
+    //如果没有包含，就要添加标签，如果当前标签已经存在了，就不添加了
     if (previous.indexOf(value) == -1) {
+
         if (previous) {
+            //标签输入框存在值时添加
             $("#tag").val(previous + ',' + value);
+
         } else {
+            //标签输入框没有值时直接写入
             $("#tag").val(value);
         }
     }
