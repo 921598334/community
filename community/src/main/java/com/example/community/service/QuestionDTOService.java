@@ -1,6 +1,5 @@
 package com.example.community.service;
 
-
 import com.example.community.advice.CustomizeException;
 import com.example.community.dto.PageDTO;
 import com.example.community.dto.QuestionDTO;
@@ -135,7 +134,6 @@ public class QuestionDTOService {
         }
 
 
-
         PageDTO pageDTO = new PageDTO();
         pageDTO.setQuestionDTOList(questionDTOList);
         pageDTO.setFirstPage(pageInfo.isIsFirstPage());
@@ -144,8 +142,6 @@ public class QuestionDTOService {
         pageDTO.setPrePage(pageInfo.isHasPreviousPage());
         pageDTO.setCurrentPage(pageInfo.getPageNum());
         pageDTO.setTotalPage(pageInfo.getPages());
-
-
 
 
         pageDTO.setPages(pageInfo.getNavigatepageNums());

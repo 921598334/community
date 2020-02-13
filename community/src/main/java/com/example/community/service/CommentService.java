@@ -4,9 +4,13 @@ package com.example.community.service;
 import com.example.community.advice.CustomizeException;
 import com.example.community.dto.CommentDTO;
 import com.example.community.enums.CommentTypeEnum;
+import com.example.community.enums.NotificationEnum;
+import com.example.community.enums.NotificationStatusEume;
 import com.example.community.mapper.CommentMapper;
+import com.example.community.mapper.NotificationMapper;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.Comment;
+import com.example.community.model.Notification;
 import com.example.community.model.Question;
 import com.example.community.model.User;
 import org.springframework.beans.BeanUtils;
@@ -19,7 +23,7 @@ import java.util.List;
 import java.util.zip.CheckedOutputStream;
 
 @Service
-public class CommentDTOService {
+public class CommentService {
 
     @Autowired
     CommentMapper commentMapper;
@@ -30,6 +34,9 @@ public class CommentDTOService {
     @Autowired
     UserMapper userMapper;
 
+
+    @Autowired
+    NotificationService notificationService;
 
     //这个函数作为一个事务，只有内部的所有操作都成功时才算成功
     @Transactional
@@ -55,6 +62,18 @@ public class CommentDTOService {
                 throw new CustomizeException("该回复不存在，无法添加评论");
             }
 
+            Long creatTime = System.currentTimeMillis();
+            //添加通知
+            Notification notification = new Notification();
+            notification.setNotifier(comment.getCommentator());
+            notification.setReceiver(dbComment.getCommentator());
+            notification.setOuter_id(comment.getParent_id());
+            notification.setType(NotificationEnum.REPLY_COMMENT.getStatus());
+            notification.setStatus(NotificationStatusEume.UNREAD.getStatus());
+            notification.setGmt_create(creatTime);
+            notificationService.insert(notification);
+
+
         }else
         {
             //回复问题,要首先判断该问题是否存在,需要根据评论的父id去得到问题
@@ -66,6 +85,19 @@ public class CommentDTOService {
 
             //添加问题的评论数
             questionService.addComment(question);
+
+            Long creatTime = System.currentTimeMillis();
+            //添加通知
+            Notification notification = new Notification();
+
+            notification.setType(NotificationEnum.REPLY_QUESTION.getStatus());
+            notification.setGmt_create(creatTime);
+            notification.setNotifier(comment.getCommentator());
+            notification.setReceiver(question.getCreator());
+            notification.setOuter_id(comment.getParent_id());
+            notification.setStatus(NotificationStatusEume.UNREAD.getStatus());
+            notificationService.insert(notification);
+
         }
 
         
@@ -100,4 +132,11 @@ public class CommentDTOService {
         return commentDTOList;
 
     }
+
+
+    //根据id得到评论或者回复
+    public Comment getCommentById(Integer id){
+        return commentMapper.getCommentById(id);
+    }
+
 }

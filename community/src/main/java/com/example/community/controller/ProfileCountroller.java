@@ -4,6 +4,7 @@ package com.example.community.controller;
 import com.example.community.dto.PageDTO;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
+import com.example.community.service.NotificationService;
 import com.example.community.service.QuestionDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,9 @@ public class ProfileCountroller {
     @Autowired
     QuestionDTOService questionDTOService;
 
+    @Autowired
+    NotificationService notificationService;
+
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name="action") String action,
                           Model model,
@@ -43,15 +47,21 @@ public class ProfileCountroller {
         if(action.equals("questions")){
             model.addAttribute("section","questions");
             model.addAttribute("sectionName","我的提问");
+
+            //得到用户读问题
+            PageDTO paginationDTO = questionDTOService.getList(user.getId(),page,size);
+            model.addAttribute("pagination",paginationDTO);
+
         }else if(action.equals("replies")){
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","我的回复");
+
+            //得到我读通知数目
+            PageDTO paginationDTO = notificationService.getList(user.getId(),page,size);
+            model.addAttribute("pagination",paginationDTO);
         }
 
 
-        PageDTO paginationDTO = questionDTOService.getList(user.getId(),page,size);
-
-        model.addAttribute("pagination",paginationDTO);
 
 
         return "profile";

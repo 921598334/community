@@ -3,13 +3,11 @@ package com.example.community.service;
 
 import com.example.community.advice.CustomizeException;
 import com.example.community.dto.CommentDTO;
-import com.example.community.dto.QuestionDTO;
 import com.example.community.mapper.QuestionMapper;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.Comment;
 import com.example.community.model.Question;
 import com.example.community.model.User;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ public class QuestionService {
     UserMapper userMapper;
 
     @Autowired
-    CommentDTOService commentDTOService;
+    CommentService commentService;
 
     public void createOrUpdate(Question newQuestion){
 
@@ -91,7 +89,7 @@ public class QuestionService {
         //开始绑定该回复下的评论
         for(CommentDTO commentDTO:commentDTOList){
 
-            List<CommentDTO> commentList = commentDTOService.getComments(commentDTO.getId());
+            List<CommentDTO> commentList = commentService.getComments(commentDTO.getId());
             commentDTO.setComments(commentList);
         }
 
@@ -108,4 +106,9 @@ public class QuestionService {
     }
 
 
+    public Question findQuestionById(Integer id){
+
+        return  questionMapper.getById(id);
+
+    }
 }

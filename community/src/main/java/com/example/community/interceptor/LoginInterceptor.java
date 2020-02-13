@@ -2,6 +2,7 @@ package com.example.community.interceptor;
 
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
+import com.example.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,6 +19,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    NotificationService notificationService;
 
     //post请求时会进行了时候有登陆的判断
     @Override
@@ -47,6 +51,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 
                 //把用户信息存储到seesion中，然后在前段判断这个session中有没有这个用户，如果没有就显示登陆
                 request.getSession().setAttribute("user",user);
+
+                //寻找到该用户没有读读消息
+                Integer count = notificationService.unReadCount(user.getId());
+                request.getSession().setAttribute("unreadCount",count);
+
                 System.out.println("在数据库中找到token");
                 return  true;
             }

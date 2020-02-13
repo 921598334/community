@@ -28,6 +28,10 @@ public  interface CommentMapper {
     @Select("select * from comment where parent_id= #{id} and type=2")
     List<Comment> getComments(@Param("id") Integer id);
 
+    //根据id得到某一个回复或者评论
+    @Select("select * from comment where id= #{id}")
+    Comment getCommentById(@Param("id") Integer id);
+
 
     //根据问题的id得到该问题的所有回复,输入的是问题的id，输出为所有回复
     @Select("select * from question where id= #{id}")

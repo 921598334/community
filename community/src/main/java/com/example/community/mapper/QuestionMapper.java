@@ -42,4 +42,6 @@ public interface QuestionMapper {
     //根据标签得到问题,通过正则表达式的方式要得到输入的tag满足心如：xxx|xxxx|xxx|xx,这样可以在数据的标签中匹配至包括xxx字段的标签,在得到的问题中排除该问题本身
     @Select("select * from question where tag regexp #{tag} and id!=#{id}")
     List<Question> findQuestionsByTag(@Param("tag") String tag,@Param("id") Integer id);
+
+
 }

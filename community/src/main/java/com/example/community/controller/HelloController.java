@@ -3,6 +3,8 @@ package com.example.community.controller;
 
 import com.example.community.dto.PageDTO;
 import com.example.community.mapper.UserMapper;
+import com.example.community.model.User;
+import com.example.community.service.NotificationService;
 import com.example.community.service.QuestionDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,9 @@ public class HelloController {
     @Autowired
     private QuestionDTOService questionDTOService;
 
+    @Autowired
+    NotificationService notificationService;
+
     //每次进入index页面是，首先判断浏览器上到cookie到token和能不能在数据库中找到对应到用户，如果有就直接登陆
     //如果在数据中没有，或者cookie过期就显示登陆按钮
     @GetMapping("/index")
@@ -32,6 +37,13 @@ public class HelloController {
                            @RequestParam(name="size",defaultValue="5") Integer size
     ) {
 
+
+
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null){
+            Integer count = notificationService.unReadCount(user.getId());
+            request.getSession().setAttribute("unreadCount",count);
+        }
 
 
 

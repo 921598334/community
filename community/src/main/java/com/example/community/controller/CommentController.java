@@ -4,7 +4,8 @@ import com.example.community.dto.CommentDTO;
 import com.example.community.dto.ResultDTO;
 import com.example.community.model.Comment;
 import com.example.community.model.User;
-import com.example.community.service.CommentDTOService;
+import com.example.community.service.CommentService;
+import com.example.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,11 @@ public class CommentController {
 
 
     @Autowired
-    private CommentDTOService commentDTOService;
+    CommentService commentService;
+
+    @Autowired
+    NotificationService notificationService;
+
 
     //这种方式会把返回的对象变为json格式
     //CommentDTO是浏览器上按照json格式传送过来的数据
@@ -49,9 +54,15 @@ public class CommentController {
 
 
         //把评论添加到数据库中
-        commentDTOService.insertComment(comment);
+        commentService.insertComment(comment);
 
         //还需要让question的评论数添加1
+
+
+        //通知数更新
+        //更新session
+        Integer count = notificationService.unReadCount(user.getId());
+        request.getSession().setAttribute("unreadCount",count);
 
         return new ResultDTO(200,"评论成功");
     }
