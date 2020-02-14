@@ -31,37 +31,48 @@ public class QuestionDTOService {
 
 
     //得到所有的记录
-    public List<QuestionDTO> getList() {
+//    public List<QuestionDTO> getList() {
+//
+//        List<Question> questions = questionMapper.getList();
+//
+//        List<QuestionDTO> questionDTOList = new ArrayList<>();
+//
+//        //在聊天记录中查询用户
+//        for(Question question:questions){
+//
+//            User user = userMapper.findById(question.getCreator());
+//
+//            //把QuestionDTO和User中的相关属性拷贝到QuestionDTO中
+//            QuestionDTO questionDTO= new QuestionDTO();
+//            BeanUtils.copyProperties(question,questionDTO);
+//            questionDTO.setUser(user);
+//
+//            questionDTOList.add(questionDTO);
+//        }
+//
+//        return  questionDTOList;
+//    }
+//
 
-        List<Question> questions = questionMapper.getList();
-
-        List<QuestionDTO> questionDTOList = new ArrayList<>();
-
-        //在聊天记录中查询用户
-        for(Question question:questions){
-
-            User user = userMapper.findById(question.getCreator());
-
-            //把QuestionDTO和User中的相关属性拷贝到QuestionDTO中
-            QuestionDTO questionDTO= new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
-            questionDTO.setUser(user);
-
-            questionDTOList.add(questionDTO);
-        }
-
-        return  questionDTOList;
-    }
-
-
-    //分页显示
-    public PageDTO getList(Integer page, Integer size) {
+    //分页显示,其中会进行模糊匹配
+    public PageDTO getList(Integer page, Integer size,String search) {
 
         String orderBy = "gmt_modified" + " desc";
 
+
+        List<Question> currentQuestion = null;
+
         PageHelper.startPage(page,size,orderBy);
-        //得到分页的数据
-        List<Question> currentQuestion =  questionMapper.getList();
+        //得到分页的数据,其中需要模糊匹配
+        if(search!=null && !search.equals("")) {
+            String  searchTmp = search.replace(" ","|");
+            currentQuestion =  questionMapper.getListRegexp(searchTmp);
+        }
+        else {
+            currentQuestion =  questionMapper.getList();
+        }
+
+
         //得到分页信息（这个分页信息不完整，不是我们需要的）
         PageInfo<Question> pageInfo = new PageInfo<>(currentQuestion);
 
@@ -97,7 +108,6 @@ public class QuestionDTOService {
         pageDTO.setPrePage(pageInfo.isHasPreviousPage());
         pageDTO.setCurrentPage(pageInfo.getPageNum());
         pageDTO.setTotalPage(pageInfo.getPages());
-
 
 
 

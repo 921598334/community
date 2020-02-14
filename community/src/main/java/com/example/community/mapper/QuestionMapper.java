@@ -20,8 +20,14 @@ public interface QuestionMapper {
 
 
 
+    //得到所有数据
     @Select("select * from question")
     List<Question> getList();
+
+
+    //得到所有数据，或者点击搜索时得到匹配数据
+    @Select("select * from question where title regexp #{search}")
+    List<Question> getListRegexp(@Param("search") String search);
 
 
     //根据用户id得到该用户的问题

@@ -80,25 +80,25 @@
                 <ul class="pagination">
 
                     <li th:if="${not pageDTO.isFirstPage()}">
-                        <a  aria-label="Previous" th:href="@{/index(page=1)}">
+                        <a  aria-label="Previous" th:href="@{/index(page=1,search=${session.search})}">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
                     </li>
 
                     <li th:if="${pageDTO.isPrePage()}">
-                        <a  aria-label="Previous" th:href="@{/index(page=${pageDTO.currentPage-1})}">
+                        <a  aria-label="Previous" th:href="@{/index(page=${pageDTO.currentPage-1},search=${session.search})}">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
 
 
                     <li th:class="${pageDTO.currentPage==page} ? 'active':''" th:each="page:${pageDTO.pages}">
-                        <a th:href="@{/index(page=${page})}" th:text="${page}" ></a>
+                        <a th:href="@{/index(page=${page},search=${session.search})}" th:text="${page}" ></a>
                     </li>
 
 
                     <li th:if="${pageDTO.isNextPage()}">
-                        <a  aria-label="Previous" th:href="@{/index(page=${pageDTO.currentPage+1})}">
+                        <a  aria-label="Previous" th:href="@{/index(page=${pageDTO.currentPage+1},search=${session.search})}">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>

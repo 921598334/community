@@ -1,0 +1,25 @@
+2020-02-14 16:01:33.208  INFO 47379 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-02-14 16:11:36.534  INFO 47379 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-02-14 16:11:36.542  INFO 47379 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2020-02-14 16:11:36.562  INFO 47379 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2020-02-14 16:11:48.094  INFO 47739 --- [main] c.e.community.CommunityApplication       : Starting CommunityApplication on dengHanBodeMacBook-Air.local with PID 47739 (started by denghanbo in /Users/denghanbo/Documents/docment/邓瀚波2012217072/commnuity/community)
+2020-02-14 16:11:48.105  INFO 47739 --- [main] c.e.community.CommunityApplication       : No active profile set, falling back to default profiles: default
+2020-02-14 16:11:50.069  INFO 47739 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-02-14 16:11:50.088  INFO 47739 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-02-14 16:11:50.089  INFO 47739 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-02-14 16:11:50.250  INFO 47739 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-02-14 16:11:50.251  INFO 47739 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1992 ms
+2020-02-14 16:11:50.667  INFO 47739 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-14 16:11:50.742  INFO 47739 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2020-02-14 16:11:50.966  INFO 47739 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-02-14 16:11:50.971  INFO 47739 --- [main] c.e.community.CommunityApplication       : Started CommunityApplication in 3.81 seconds (JVM running for 4.974)
+2020-02-14 16:12:01.015  INFO 47739 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-02-14 16:12:01.017  INFO 47739 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-02-14 16:12:01.024  INFO 47739 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2020-02-14 16:12:01.081 ERROR 47739 --- [http-nio-8080-exec-1] c.e.c.controller.HelloController         : testerror
+2020-02-14 16:12:01.240  INFO 47739 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-02-14 16:12:01.499  INFO 47739 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-02-14 16:15:05.170  INFO 47739 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-02-14 16:15:05.174  INFO 47739 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2020-02-14 16:15:05.183  INFO 47739 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2020-02-14 16:15:22.188 ERROR 47861 --- [http-nio-8080-exec-1] c.e.c.controller.HelloController         : testerror

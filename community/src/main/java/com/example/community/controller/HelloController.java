@@ -6,6 +6,9 @@ import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
 import com.example.community.service.NotificationService;
 import com.example.community.service.QuestionDTOService;
+import lombok.extern.slf4j.Slf4j;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 //主界面
 @Controller
+@Slf4j
 public class HelloController {
 
 
@@ -28,13 +32,16 @@ public class HelloController {
     @Autowired
     NotificationService notificationService;
 
+
+
     //每次进入index页面是，首先判断浏览器上到cookie到token和能不能在数据库中找到对应到用户，如果有就直接登陆
     //如果在数据中没有，或者cookie过期就显示登陆按钮
     @GetMapping("/index")
     public String greeting(HttpServletRequest request,
                            Model model,
                            @RequestParam(name="page",defaultValue="1") Integer page,
-                           @RequestParam(name="size",defaultValue="5") Integer size
+                           @RequestParam(name="size",defaultValue="5") Integer size,
+                           @RequestParam(name="search",required = false) String search
     ) {
 
 
@@ -47,8 +54,18 @@ public class HelloController {
 
 
 
+
+
+
+
+        request.getSession().setAttribute("search",search);
+
+        PageDTO pageDTO = null;
         //从数据库中得到分页的数据
-        PageDTO pageDTO = questionDTOService.getList(page,size);
+        pageDTO = questionDTOService.getList(page,size,search);
+
+
+
 
         model.addAttribute("pageDTO",pageDTO);
 
