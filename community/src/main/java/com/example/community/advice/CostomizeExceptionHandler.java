@@ -14,37 +14,37 @@ import javax.servlet.http.HttpServletRequest;
 //@ControllerAdvice
 public class CostomizeExceptionHandler {
 
-//    @ExceptionHandler(Exception.class)
-//    ModelAndView handle(HttpServletRequest request, Throwable ex, Model model){
-//
-//
-//
-//        String contentType = request.getContentType();
-//
-//
-//        //进行错误页面跳转
-//        HttpStatus status = getStatus(request);
-//
-//        if(ex instanceof CustomizeException){
-//            model.addAttribute("message",ex.getMessage());
-//        }else{
-//
-//            model.addAttribute("message","服务器冒烟了，要不然你稍后再试试！！！");
-//        }
-//
-//        //跳转到error页面
-//        return new ModelAndView("error");
-//
-//
-//    }
-//
-//    private  HttpStatus getStatus(HttpServletRequest request){
-//        Integer statusCode = (Integer)request.getAttribute("javax.servlet.error.status_code");
-//        if(statusCode == null){
-//            return HttpStatus.INTERNAL_SERVER_ERROR;
-//        }
-//        return HttpStatus.valueOf(statusCode);
-//    }
+    @ExceptionHandler(Exception.class)
+    ModelAndView handle(HttpServletRequest request, Throwable ex, Model model){
+
+
+
+        String contentType = request.getContentType();
+
+
+        //进行错误页面跳转
+        HttpStatus status = getStatus(request);
+
+        if(ex instanceof CustomizeException){
+            model.addAttribute("message",ex.getMessage());
+        }else{
+
+            model.addAttribute("message","服务器冒烟了，要不然你稍后再试试！！！");
+        }
+
+        //跳转到error页面
+        return new ModelAndView("error");
+
+
+    }
+
+    private  HttpStatus getStatus(HttpServletRequest request){
+        Integer statusCode = (Integer)request.getAttribute("javax.servlet.error.status_code");
+        if(statusCode == null){
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return HttpStatus.valueOf(statusCode);
+    }
 
 
 

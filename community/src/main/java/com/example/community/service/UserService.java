@@ -35,4 +35,9 @@ public class UserService {
 
        return user;
     }
+
+    //登陆时判断用户的用户名和密码时候相同,如果相同返回true
+    public User checkUser(User user){
+        return userMapper.checkUser(user);
+    }
 }

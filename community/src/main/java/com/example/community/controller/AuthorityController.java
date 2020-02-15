@@ -33,9 +33,6 @@ public class AuthorityController {
     UserService userService;
 
 
-    @Autowired
-    private UserMapper userMapper;
-
     @Value("${github.client.id}")
     private String clientId;
 

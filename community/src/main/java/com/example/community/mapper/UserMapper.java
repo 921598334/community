@@ -39,4 +39,8 @@ public interface UserMapper {
     //更新用户
     @Update("UPDATE user SET name = #{name},token=#{token},gmt_modified=#{gmt_modified},avatar_url=#{avatar_url} where account_id = #{account_id}")
     void update(User user);
+
+    //检查用户名和密码是否匹配
+    @Select("select * from user where user_name= #{user_name} and password = #{password}")
+    User checkUser(User user);
 }

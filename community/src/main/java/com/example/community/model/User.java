@@ -14,8 +14,9 @@ public class User {
     private Long gmt_create;
     private Long gmt_modified;
     private String avatar_url;
-
-
+    private String user_name;
+    private String password;
+    private String my_avatar_url;
 
 
     public User( String name, String account_id, String token, Long gmt_create, Long gmt_modified,String avatar_url) {

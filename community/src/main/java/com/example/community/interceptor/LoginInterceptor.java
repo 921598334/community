@@ -32,8 +32,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         if(cookies==null || cookies.length==0)
         {
-            System.out.println("token不存在");
-            System.out.println("被拦截");
+            System.out.println("token不存在，被拦截,返回登陆界面");
+            response.sendRedirect( "/login");
             return false;
         }
 
@@ -44,8 +44,8 @@ public class LoginInterceptor implements HandlerInterceptor {
                 User user = userMapper.findByToken(cookie.getValue()) ;
 
                 if(user == null){
-
-                    System.out.println("被拦截");
+                    System.out.println("没有通过token找到用户，被拦截");
+                    response.sendRedirect( "/login");
                     return false;
                 }
 
@@ -63,6 +63,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         System.out.println("被拦截");
+        response.sendRedirect( "/login");
         return false;
 
         //return  true;
