@@ -38,8 +38,9 @@ function comment2target(targetId, type, content) {
                     var isAccepted = confirm(response.message);
                     //点击确定时进行页面跳转
                     if (isAccepted) {
-                        window.open("https://github.com/login/oauth/authorize?client_id=2859958f9f059979ed3a&redirect_uri=" + document.location.origin + "/callback&scope=user&state=1");
-                        window.localStorage.setItem("closable", true);
+                        // window.open("http://localhost:8080/login");
+                        // window.localStorage.setItem("closable", true);
+                        window.location.href="http://localhost:8080/login"
                     }
                 } else {
                     alert(response.message);

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 
-//前端通过post发出评论时进行的处理
+//前端通过post发出评论或者回复时进行的处理
 @Controller
 public class CommentController {
 
@@ -37,7 +37,7 @@ public class CommentController {
         User user = (User) request.getSession().getAttribute("user");
 
         if(user == null){
-            return new ResultDTO(2002,"没有登陆");
+            return new ResultDTO(2003,"没有登陆");
         }
 
         Comment comment = new Comment();
