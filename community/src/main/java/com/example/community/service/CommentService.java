@@ -52,6 +52,7 @@ public class CommentService {
         }
 
 
+
         //当前是评论时
         if(comment.getType() == CommentTypeEnum.COMMENT.getType()){
 
@@ -102,6 +103,7 @@ public class CommentService {
 
         
         commentMapper.insertComment(comment);
+
 
 
     }

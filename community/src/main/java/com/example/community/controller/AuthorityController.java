@@ -103,23 +103,6 @@ public class AuthorityController {
 
 
 
-    //退出登陆时需要移除cookie与session
-    @GetMapping("/logout")
-    public String logout(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ){
 
-        request.getSession().removeAttribute("user");
-
-        //java删除cookie的方法
-        Cookie cookie = new Cookie("token",null);
-        response.addCookie(cookie);
-        cookie.setMaxAge(0);
-
-
-        System.out.println("已经退出登陆");
-        return  "redirect:/index";
-    }
 
 }

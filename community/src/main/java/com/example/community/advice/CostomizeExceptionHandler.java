@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 //程序发现异常时的处理，这里的异常需要用户自己用throw进行抛出
-//@ControllerAdvice
+@ControllerAdvice
 public class CostomizeExceptionHandler {
 
     @ExceptionHandler(Exception.class)

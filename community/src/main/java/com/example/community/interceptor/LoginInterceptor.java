@@ -1,6 +1,7 @@
 package com.example.community.interceptor;
 
 import com.alibaba.fastjson.JSON;
+import com.example.community.advice.CustomizeException;
 import com.example.community.dto.ResultDTO;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
@@ -41,13 +42,14 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 
 
-
-
         //通过cookie得到在数据库中得到用户
         Cookie[] cookies = request.getCookies();
 
         if(cookies==null || cookies.length==0)
         {
+
+
+
             System.out.println("token不存在，被拦截,返回登陆界面");
 
             if(isJson){
@@ -70,14 +72,16 @@ public class LoginInterceptor implements HandlerInterceptor {
 
                 if(user == null){
                     System.out.println("没有通过token找到用户，被拦截");
-                    if(isJson){
-                        //如果收到的是json，也需要返回json
-                        returnJson(response,JSON.toJSONString(new ResultDTO(2003,"用户没有登陆，是否需要跳转到登陆界面")));
-                    }else {
-                        //如果收到的是页面，返回页面即可
-                        response.sendRedirect( "/login");
-                    }
-                    return false;
+
+                    throw new CustomizeException("用户没有登陆");
+//                    if(isJson){
+//                        //如果收到的是json，也需要返回json
+//                        returnJson(response,JSON.toJSONString(new ResultDTO(2003,"用户没有登陆，是否需要跳转到登陆界面")));
+//                    }else {
+//                        //如果收到的是页面，返回页面即可
+//                        response.sendRedirect( "/login");
+//                    }
+//                    return false;
                 }
 
                 //把用户信息存储到seesion中，然后在前段判断这个session中有没有这个用户，如果没有就显示登陆

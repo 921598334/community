@@ -157,18 +157,12 @@
                                     <!--<hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">-->
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section1">
 
-
-
-
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="你的评论...." th:id="${'comment-'+comment.id}">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default" type="button" th:data-id="${comment.id}" onclick="comment(this)">发布</button>
                                             </span>
                                         </div>
-
-
-
 
 
                                     </div>
@@ -199,7 +193,7 @@
                         <div class="media-left">
                             <a href="#">
                                 <img class="media-object img-rounded"
-                                     th:src="${session.user != null ? session.user.avatar_url : '/images/default-avatar.png'}">
+                                     th:src="${session.user != null ? session.user.avatar_url : '/images/pika.jpg'}">
                             </a>
                         </div>
                         <div class="media-body">

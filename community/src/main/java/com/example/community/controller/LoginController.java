@@ -74,7 +74,7 @@ public class LoginController {
             response.addCookie(new Cookie("token",token));
 
 
-            //把user放入session中，以便能在index中显示,因为拦截器不会拦截index页面，所以需要在这里添加session
+            //把user放入session中，以便能在index中显示,因为拦截器不会拦截login页面，所以需要在这里添加session
             request.getSession().setAttribute("user",user);
 
 
@@ -89,6 +89,29 @@ public class LoginController {
     }
 
 
+
+
+    //退出登陆时需要移除cookie与session
+    @GetMapping("/logout")
+    public String logout(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ){
+
+        request.getSession().removeAttribute("user");
+
+        //java删除cookie的方法
+        Cookie cookie = new Cookie("token",null);
+        response.addCookie(cookie);
+        cookie.setMaxAge(0);
+        //删除session
+        request.getSession().removeAttribute("unreadCount");
+        request.getSession().removeAttribute("user");
+
+
+        System.out.println("已经退出登陆");
+        return  "redirect:/index";
+    }
 }
 
 
