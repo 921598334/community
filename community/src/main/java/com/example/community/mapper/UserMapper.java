@@ -28,7 +28,7 @@ public interface UserMapper {
     User findByUserName(@Param("name") String name);
 
     //更新用户
-    @Update("UPDATE user SET name = #{name},passwd=#{passwd},token=#{token},gmt_modified=#{gmt_modified},avatar_url=#{avatar_url} where id = #{id}")
+    @Update("UPDATE user SET name = #{name},passwd=#{passwd},token=#{token},gmt_modified=#{gmt_modified},avatar_url=#{avatar_url},github_id=#{github_id} where id = #{id}")
     void update(User user);
 
     //检查用户名和密码是否匹配

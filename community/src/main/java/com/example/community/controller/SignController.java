@@ -2,17 +2,21 @@ package com.example.community.controller;
 
 
 import com.example.community.model.User;
+import com.example.community.provider.FileUpload;
 import com.example.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
+
 
 @Controller
 public class SignController {
@@ -20,6 +24,8 @@ public class SignController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    FileUpload fileUpload;
 
 
     @GetMapping("/sign")
@@ -34,7 +40,8 @@ public class SignController {
                        @RequestParam(name="username",defaultValue="") String userName,
                        @RequestParam(name="userpwd",defaultValue="") String password,
                        @RequestParam(name="re_userpwd",defaultValue="") String re_userpwd,
-                       @RequestParam(name="avater",required = false) String avatar){
+                       @RequestParam(name="avater",required = false) String avatar,
+                       @RequestParam(name="file",defaultValue = "/images/pika.jpg") MultipartFile multipartFile){
 
 
         if(userName.equals("")){
@@ -70,13 +77,24 @@ public class SignController {
         }
 
 
+
+        //开始上传头像
+        String path = fileUpload.uploadImage(multipartFile);
+
+
+
         User user = new User();
         user.setName(userName);
         user.setPasswd(password);
         Long createTime = System.currentTimeMillis();
         user.setGmt_create(createTime);
         user.setGmt_modified(createTime);
-        user.setAvatar_url("/images/pika.jpg");
+
+        if(path==null)
+            user.setAvatar_url("/images/pika.jpg");
+        else
+            user.setAvatar_url(path);
+
 
 
 

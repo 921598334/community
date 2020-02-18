@@ -3,7 +3,8 @@ package com.example.community.provider;
 
 import com.alibaba.fastjson.JSON;
 import com.example.community.dto.AccessDTO;
-import com.example.community.dto.GitHubUser;
+
+import com.example.community.model.GithubUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +46,7 @@ public class GitHubProvider {
 
     //根据token得到用户信息(GET请求)
     //        https://api.github.com/user?access_token=53877cec3fdaeee7374bd93fb9623c2b0ba3032c
-    public GitHubUser getUser(String accessToken){
+    public GithubUser getUser(String accessToken){
 
         OkHttpClient client = new OkHttpClient();
 
@@ -54,7 +55,7 @@ public class GitHubProvider {
                 .build();
         try (Response response = client.newCall(request).execute()) {
              String userJson  = response.body().string();
-             return JSON.parseObject(userJson,GitHubUser.class);
+             return JSON.parseObject(userJson,GithubUser.class);
         }catch (Exception e){
 
             return  null;

@@ -29,25 +29,19 @@ public class UserService {
 
 
 
-       User user = userMapper.findById(newUser.getId());
+       User oldUser = userMapper.findById(newUser.getId());
 
-       if(user==null){
+       if(oldUser==null){
 
            //不存在需要插入
            userMapper.insertUser(newUser);
 
        }else{
 
-           //存在到话需要更新token和修改时间,头像,姓名等
-           user.setToken(newUser.getToken());
-           user.setGmt_modified(newUser.getGmt_modified());
-           user.setAvatar_url(newUser.getAvatar_url());
-           user.setName(newUser.getName());
-
-           userMapper.update(user);
+           userMapper.update(newUser);
        }
 
-       return user;
+       return newUser;
     }
 
     //登陆时判断用户的用户名和密码时候相同,如果相同返回true
@@ -61,4 +55,7 @@ public class UserService {
     }
 
 
+    public User findById(Integer user_id) {
+        return userMapper.findById(user_id);
+    }
 }

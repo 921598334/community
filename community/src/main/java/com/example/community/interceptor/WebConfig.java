@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        String[] excludes = new String[]{"/","/upload/**","/login/**","/sign/**","/error/**","/question/**","/login/**","/static/**","/index/**","/css/**","/fonts/**","/images/**","/js/**","/Wopop_files/**","/callback/**","/ckeditor/**","/logout/**"};
+        String[] excludes = new String[]{"/","/bind/**","/upload/**","/login/**","/sign/**","/error/**","/question/**","/login/**","/static/**","/index/**","/css/**","/fonts/**","/images/**","/js/**","/Wopop_files/**","/callback/**","/ckeditor/**","/logout/**"};
         registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns(excludes);
 
     }

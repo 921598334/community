@@ -3,8 +3,10 @@ package com.example.community.controller;
 
 import com.example.community.dto.FileDTO;
 import com.example.community.model.UploadImageResModel;
+import com.example.community.provider.FileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,9 @@ import java.util.UUID;
 @Controller
 public class FileController {
 
+    @Autowired
+    FileUpload fileUpload;
+
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     @PostMapping("/uploadImage")
@@ -28,39 +33,24 @@ public class FileController {
         UploadImageResModel res = new UploadImageResModel();
         res.setUploaded(0);
 
-        if (multipartFile == null || multipartFile.isEmpty())
+
+        String path = fileUpload.uploadImage(multipartFile);
+
+
+
+        if (path == null){
             return res;
-
-        //生成新的文件名及存储位置
-        String fileName = multipartFile.getOriginalFilename();
-        String newFileName = UUID.randomUUID().toString()
-                .replaceAll("-", "")
-                .concat(fileName.substring(fileName.lastIndexOf(".")));
-
-
-        String fullPath = System.getProperty("user.dir")+"/src/main/resources/static/upload/".concat(newFileName);
-
-        try {
-            File target = new File(fullPath);
-            if (!target.getParentFile().exists()) { //判断文件父目录是否存在
-                target.getParentFile().mkdirs();
-            }
-
-            multipartFile.transferTo(target);
-
-
-            String imgUrl = "/upload/".concat(newFileName);
-
+        }else {
             res.setUploaded(1);
-            res.setFileName(fileName);
-            res.setUrl(imgUrl);
-            return res;
 
-        } catch (IOException ex) {
-            logger.error("上传图片异常", ex);
+            String[] tmp = path.split("/");
+
+            res.setFileName(tmp[tmp.length-1]);
+            res.setUrl(path);
+            return res;
         }
 
-        return res;
+
     }
 
 }

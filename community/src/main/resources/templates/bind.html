@@ -4,7 +4,7 @@
 
     <head th:insert="~{import :: head}"></head>
 
-    <title>用户注册界面</title>
+    <title>github账号绑定界面</title>
 
 </head>
 
@@ -24,25 +24,14 @@
         <div class="login_boder">
 
 
-            <form action="/sign" enctype="multipart/form-data" method="post">
+            <form action="/bind" method="post">
 
                 <div class="login_padding" id="login_model">
 
                     <!--<h2>用户名</h2>-->
                     <label>
-                        <input type="text" id="username" name="username" class="txt_input txt_input2" placeholder="请输入用户名">
+                        <input type="text" id="username" name="username" class="txt_input txt_input2" placeholder="请输入已经存在的用户名">
                     </label>
-
-                    <!--<h2>密码</h2>-->
-                    <label>
-                        <input type="password"  id="userpwd" name="userpwd" class="txt_input" placeholder="请输入登陆密码">
-                    </label>
-
-                    <label>
-                        <input type="password"  id="re_userpwd" name="re_userpwd" class="txt_input" placeholder="请再次输入登陆密码">
-                    </label>
-
-                    选择头像:<input type="file" id="file" name="file" /> <br>
 
 
 
@@ -53,16 +42,12 @@
                             <!--<input type="checkbox" name="checkbox" id="save_me">-->
                             <!--<label>Remember me</label>-->
 
-                            <input type="submit" class="sub_button" name="sigin" id="sigin" value="注册" style="opacity: 0.7;">
+                            <input type="submit" class="sub_button" name="bind" id="bind" value="绑定" style="opacity: 0.7;">
                         </div>
-
-
 
                         <div align="right">
-                            <a href="/login"><input type="button" class="sub_button" name="button" id="button" value="已有密码？登陆" style="opacity: 0.7;"></a>
+                            <a href="/sign"><input type="button" class="sub_button" name="button" id="button" value="还没有账号？注册" style="opacity: 0.7;"></a>
                         </div>
-
-                        <br/>
 
                     </div>
                 </div>
