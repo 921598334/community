@@ -5,7 +5,8 @@ import com.example.community.dto.PageDTO;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
 import com.example.community.service.NotificationService;
-import com.example.community.service.QuestionDTOService;
+
+import com.example.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ public class ProfileCountroller {
     UserMapper userMapper;
 
     @Autowired
-    QuestionDTOService questionDTOService;
+    QuestionService questionService;
 
     @Autowired
     NotificationService notificationService;
@@ -49,7 +50,7 @@ public class ProfileCountroller {
             model.addAttribute("sectionName","我的提问");
 
             //得到用户读问题
-            PageDTO paginationDTO = questionDTOService.getList(user.getId(),page,size);
+            PageDTO paginationDTO = questionService.getList(user.getId(),page,size);
             model.addAttribute("pagination",paginationDTO);
 
         }else if(action.equals("replies")){

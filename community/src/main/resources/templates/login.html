@@ -16,6 +16,8 @@
 
 
     <div class="alert alert-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${error!=null}"  th:text="${error}" ></div>
+    <div class="alert alert-success col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${info!=null}"  th:text="${info}" ></div>
+
 
     <!--登陆界面·-->
     <div class="login_m">
@@ -28,24 +30,30 @@
 
                 <div class="login_padding" id="login_model">
 
-                    <h2>用户名</h2>
+                    <!--<h2>用户名</h2>-->
                     <label>
                         <input type="text" id="username" name="username" class="txt_input txt_input2" placeholder="请输入用户名">
                     </label>
 
-                    <h2>密码</h2>
+                    <!--<h2>密码</h2>-->
                     <label>
                         <input type="password"  id="userpwd" name="userpwd" class="txt_input" placeholder="请输入登陆密码">
                     </label>
 
 
-                    <p class="forgot"><a id="iforget" href="javascript:void(0);">Forgot your password?</a></p>
+                    <p clas     s="forgot"><a id="iforget" href="javascript:void(0);">Forgot your password?</a></p>
 
                     <div class="rem_sub">
                         <div class="rem_sub_l">
-                            <input type="checkbox" name="checkbox" id="save_me">
-                            <label>Remember me</label>
+                            <!--<input type="checkbox" name="checkbox" id="save_me">-->
+                            <!--<label>Remember me</label>-->
+
+                            <a href="/sign"><input type="button" class="sub_button" name="sigin" id="sigin" value="注册" style="opacity: 0.7;"></a>
+
                         </div>
+
+
+
 
                         <div align="right">
                             <input type="submit" class="sub_button" name="button" id="button" value="登陆" style="opacity: 0.7;">
@@ -58,10 +66,12 @@
                         </div>
 
 
-
-
-
                     </div>
+
+
+
+
+
                 </div>
 
             </form>

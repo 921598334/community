@@ -5,7 +5,7 @@ import com.example.community.dto.CommentDTO;
 import com.example.community.dto.QuestionDTO;
 import com.example.community.model.Comment;
 import com.example.community.model.Question;
-import com.example.community.service.QuestionDTOService;
+
 import com.example.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +21,9 @@ import java.util.List;
 public class QuestionController {
 
     @Autowired
-    QuestionDTOService questionDTOService;
-
-    @Autowired
     QuestionService questionService;
+
+
 
     @GetMapping("/question/{id}")
     public String question(
@@ -33,10 +32,10 @@ public class QuestionController {
     ){
 
 
-        QuestionDTO questionDTO = questionDTOService.getById(id);
+        QuestionDTO questionDTO = questionService.getById(id);
 
         //添加观看人数
-        questionDTOService.addView(questionDTO);
+        questionService.addView(questionDTO);
 
         model.addAttribute("question",questionDTO);
 

@@ -68,14 +68,14 @@ public class NotificationService {
             if(notification.getType()==NotificationEnum.REPLY_QUESTION.getStatus()){
 
                 //该消息是针对问题的
-                Question question = questionService.findQuestionById(notification.getOuter_id());
+                QuestionDTO question = questionService.getById(notification.getOuter_id());
                 title = question.getTitle();
                 typeString = "回答了：";
             }else {
 
                 //该消息是针对回复的，那么需要得到回复，再得到问题
                 Comment comment = commentService.getCommentById(notification.getOuter_id());
-                Question question = questionService.findQuestionById(comment.getParent_id());
+                QuestionDTO question = questionService.getById(comment.getParent_id());
                 title = question.getTitle();
                 typeString = "评论了你在该中的回复回复：";
             }

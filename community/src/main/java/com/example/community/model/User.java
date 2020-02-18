@@ -8,27 +8,13 @@ import lombok.Data;
 public class User {
 
     private Integer id;
-    private String account_id;
+
     private String name;
+    private String passwd;
     private String token;
     private Long gmt_create;
     private Long gmt_modified;
     private String avatar_url;
-    private String user_name;
-    private String password;
-    private String my_avatar_url;
+    private Integer github_id;
 
-
-    public User( String name, String account_id, String token, Long gmt_create, Long gmt_modified,String avatar_url) {
-
-        this.name = name;
-        this.account_id = account_id;
-        this.token = token;
-        this.gmt_create = gmt_create;
-        this.gmt_modified = gmt_modified;
-        this.avatar_url = avatar_url;
-    }
-
-
-    public User(){}
 }

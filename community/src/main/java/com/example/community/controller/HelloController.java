@@ -5,7 +5,8 @@ import com.example.community.dto.PageDTO;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
 import com.example.community.service.NotificationService;
-import com.example.community.service.QuestionDTOService;
+
+import com.example.community.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
@@ -27,7 +28,7 @@ public class HelloController {
     private UserMapper userMapper;
 
     @Autowired
-    private QuestionDTOService questionDTOService;
+    private QuestionService questionService;
 
     @Autowired
     NotificationService notificationService;
@@ -55,15 +56,11 @@ public class HelloController {
 
 
 
-
-
-
         request.getSession().setAttribute("search",search);
 
         PageDTO pageDTO = null;
         //从数据库中得到分页的数据
-        pageDTO = questionDTOService.getList(page,size,search);
-
+        pageDTO = questionService.getList(page,size,search);
 
 
 

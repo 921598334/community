@@ -52,8 +52,8 @@ public class LoginController {
 
 
         User user = new User();
-        user.setUser_name(userName);
-        user.setPassword(password);
+        user.setName(userName);
+        user.setPasswd(password);
         user = userService.checkUser(user);
 
         if(user!=null){

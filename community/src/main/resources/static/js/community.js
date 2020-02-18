@@ -40,7 +40,7 @@ function comment2target(targetId, type, content) {
                     if (isAccepted) {
                         // window.open("http://localhost:8080/login");
                         // window.localStorage.setItem("closable", true);
-                        window.location.href="http://localhost:8080/login"
+                        window.location.href="http://localhost:8089/login"
                     }
                 } else {
                     alert(response.message);

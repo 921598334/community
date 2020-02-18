@@ -1,5 +1,6 @@
 package com.example.community.service;
 
+import com.example.community.mapper.GithubUserMapper;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,24 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    GithubUserMapper githubUserMapper;
 
-    //创建或者更新用户，如果能在数据库中查询到github用户到account_id存在，就更新token，否则就插入
+
+    //创建或者更新用户，如果能在数据库中查询到用户，就更新token，否则就插入
     public User createOrUpdate(User newUser) {
 
-       User user = userMapper.findByAcountId(newUser.getAccount_id());
+        //注册时没有ID，所以直接创建
+        if(newUser.getId()==null)
+        {
+            userMapper.insertUser(newUser);
+            return newUser;
+        }
+
+
+
+
+       User user = userMapper.findById(newUser.getId());
 
        if(user==null){
 
@@ -38,6 +52,13 @@ public class UserService {
 
     //登陆时判断用户的用户名和密码时候相同,如果相同返回true
     public User checkUser(User user){
-        return userMapper.checkUser(user);
+        return userMapper.check(user);
     }
+
+    //根据用户名寻找用户，在注册时用于判断当前用户是否存在
+    public User findByUserName(String userName){
+        return userMapper.findByUserName(userName);
+    }
+
+
 }
