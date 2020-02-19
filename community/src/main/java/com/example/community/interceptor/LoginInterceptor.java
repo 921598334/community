@@ -71,13 +71,17 @@ public class LoginInterceptor implements HandlerInterceptor {
                 if(user == null){
                     System.out.println("没有通过token找到用户，被拦截");
 
-                    //throw new CustomizeException("用户没有登陆");
+
+
                     if(isJson){
                         //如果收到的是json，也需要返回json
                         returnJson(response,JSON.toJSONString(new ResultDTO(2003,"用户没有登陆，是否需要跳转到登陆界面")));
                     }else {
                         //如果收到的是页面，返回页面即可
-                        response.sendRedirect( "/login");
+
+
+                        throw new CustomizeException("用户没有登陆");
+                        //response.sendRedirect( "/login");
                     }
                     return false;
                 }

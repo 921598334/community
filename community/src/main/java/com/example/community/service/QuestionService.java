@@ -10,10 +10,12 @@ import com.example.community.mapper.UserMapper;
 import com.example.community.model.Comment;
 import com.example.community.model.Question;
 import com.example.community.model.User;
+import com.example.community.provider.HTMLProccess;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,6 +32,13 @@ public class QuestionService {
 
     @Autowired
     CommentService commentService;
+
+    @Autowired
+    HTMLProccess htmlProccess;
+
+    @Value("${showLength}")
+    private Integer showLength;
+
 
     public void createOrUpdate(Question newQuestion){
 
@@ -159,6 +168,20 @@ public class QuestionService {
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
 
+
+            //得到正文内容，然后删除html的部分
+            String descript = questionDTO.getDescription();
+            descript = htmlProccess.delHTMLTag(descript);
+
+            //去前n个字符
+            Integer length = descript.length();
+            if(length>showLength){
+                descript = descript.substring(0,showLength-1);
+                descript+="......";
+            }
+
+            questionDTO.setDescription(descript);
+
             questionDTOList.add(questionDTO);
         }
 
@@ -203,6 +226,23 @@ public class QuestionService {
             QuestionDTO questionDTO= new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
+
+
+            //得到正文内容，然后删除html的部分
+            String descript = questionDTO.getDescription();
+            descript = htmlProccess.delHTMLTag(descript);
+
+            //去前n个字符
+            Integer length = descript.length();
+            if(length>showLength){
+                descript = descript.substring(0,showLength-1);
+                descript+="......";
+            }
+
+            questionDTO.setDescription(descript);
+
+
+
 
             questionDTOList.add(questionDTO);
         }

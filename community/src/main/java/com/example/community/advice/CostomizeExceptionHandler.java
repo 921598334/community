@@ -14,9 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class CostomizeExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    ModelAndView handle(HttpServletRequest request, Throwable ex, Model model){
-
+    @ExceptionHandler(CustomizeException.class)
+    public ModelAndView handle(HttpServletRequest request, Throwable ex, Model model){
 
 
         String contentType = request.getContentType();
