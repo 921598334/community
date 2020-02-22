@@ -13,12 +13,16 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     LoginInterceptor loginInterceptor;
 
+    String fullpath = System.getProperty("user.dir")+"/src/main/resources/static/upload/";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
 
+
+
         //当在浏览器上访问localhost：//upload/xxx时会自动去访问后面配置的路径
-        registry.addResourceHandler("/upload/**").addResourceLocations("file:/Users/denghanbo/Documents/docment/邓瀚波2012217072/commnuity/community/src/main/resources/static/upload/"); //添加这一行
+        registry.addResourceHandler("/upload/**").addResourceLocations("file:"+fullpath,"classpath:/static/upload/"); //添加这一行
+
 
     }
 

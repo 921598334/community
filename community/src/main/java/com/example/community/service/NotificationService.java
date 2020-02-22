@@ -9,12 +9,11 @@ import com.example.community.mapper.NotificationMapper;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.Comment;
 import com.example.community.model.Notification;
-import com.example.community.model.Question;
+
 import com.example.community.model.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.tools.corba.se.idl.constExpr.Not;
-import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

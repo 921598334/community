@@ -4,18 +4,16 @@ package com.example.community.controller;
 import com.example.community.model.User;
 import com.example.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.UUID;
 
 @Controller
@@ -24,8 +22,17 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    @Value("${github.redirect.url}")
+    private String redirectUrl;
+
+
     @GetMapping("/login")
-    public String login(){
+    public String login(Model model){
+
+
+        String githubPath = "https://github.com/login/oauth/authorize?client_id=71723b2931d149bfcd48&redirect_uri="+redirectUrl+"&scope=user&state=1";
+
+        model.addAttribute("githubPath",githubPath);
 
          return  "login";
     }
