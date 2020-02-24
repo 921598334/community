@@ -119,6 +119,105 @@ public class QuestionService {
     }
 
 
+    //根据当前问题的tag得到相关的问题,
+    public List<Question> findAllQuestionsByTag(String tag){
+
+        String reTag = tag.replace(',','|');
+        return questionMapper.findAllQuestionsByTag(reTag);
+    }
+
+
+
+    //同时根据标签和搜索内容进行查询
+    public PageDTO getListByTagAndSearch(Integer page, Integer size,String tag,String search) {
+
+
+        String orderBy = "gmt_modified" + " desc";
+
+
+        List<Question> currentQuestion = null;
+
+        PageHelper.startPage(page,size,orderBy);
+
+        //判读当前的查询方式，如果标签为空，且搜索为空，那就是全部查询
+        if((search==null || search.equals(""))&&(tag==null || tag.equals(""))){
+            currentQuestion =  questionMapper.getList();
+        }
+        else if((search!=null || !search.equals(""))&&(tag==null || tag.equals(""))){
+            //搜索不为空，同时标签为空
+            String  searchTmp = search.replace(" ","|");
+            currentQuestion =  questionMapper.getListRegexp(searchTmp);
+        }else if((search==null || search.equals(""))&&(tag!=null || !tag.equals(""))){
+            //标签不为空，同时搜索为空
+            String reTag = tag.replace(',','|');
+            currentQuestion = questionMapper.findAllQuestionsByTag(reTag);
+        }else {
+            //既有标签又有搜索
+            String  searchTmp = search.replace(" ","|");
+            String reTag = tag.replace(',','|');
+            currentQuestion = questionMapper.findAllQuestionsByTagAndSearch(reTag,searchTmp);
+        }
+
+
+
+
+        //得到分页信息（这个分页信息不完整，不是我们需要的）
+        PageInfo<Question> pageInfo = new PageInfo<>(currentQuestion);
+
+
+        //结合用户信息
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        //在聊天记录中查询用户
+        for(Question question:currentQuestion){
+
+            User user = userMapper.findById(question.getCreator());
+
+            //表示这篇文章没有用户创建（或者该用户已经不存在数据库中了）
+            if(user == null){
+                System.out.println("有篇文章没有用户创建");
+                continue;
+            }
+
+            //把QuestionDTO和User中的相关属性拷贝到QuestionDTO中
+            QuestionDTO questionDTO= new QuestionDTO();
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setUser(user);
+
+
+            //得到正文内容，然后删除html的部分
+            String descript = questionDTO.getDescription();
+            descript = htmlProccess.delHTMLTag(descript);
+
+            //去前n个字符
+            Integer length = descript.length();
+            if(length>showLength){
+                descript = descript.substring(0,showLength-1);
+                descript+="......";
+            }
+
+            questionDTO.setDescription(descript);
+
+            questionDTOList.add(questionDTO);
+        }
+
+
+
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setQuestionDTOList(questionDTOList);
+        pageDTO.setFirstPage(pageInfo.isIsFirstPage());
+        pageDTO.setLastPage(pageInfo.isIsLastPage());
+        pageDTO.setNextPage(pageInfo.isHasNextPage());
+        pageDTO.setPrePage(pageInfo.isHasPreviousPage());
+        pageDTO.setCurrentPage(pageInfo.getPageNum());
+        pageDTO.setTotalPage(pageInfo.getPages());
+
+
+
+        pageDTO.setPages(pageInfo.getNavigatepageNums());
+
+        return  pageDTO;
+
+    }
 
 
 
@@ -126,8 +225,88 @@ public class QuestionService {
 
 
 
+    //分页显示,当点击了标签时调用，得到标签下当所有问题
+    public PageDTO getListByTag(Integer page, Integer size,String tag) {
 
-    //分页显示,其中会进行模糊匹配
+
+        List<Question> currentQuestion = null;
+
+        PageHelper.startPage(page,size);
+        //得到分页的数据,其中需要模糊匹配
+        currentQuestion = questionMapper.findAllQuestionsByTag(tag);
+
+
+        //得到分页信息（这个分页信息不完整，不是我们需要的）
+        PageInfo<Question> pageInfo = new PageInfo<>(currentQuestion);
+
+
+        //结合用户信息
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        //在聊天记录中查询用户
+        for(Question question:currentQuestion){
+
+            User user = userMapper.findById(question.getCreator());
+
+            //表示这篇文章没有用户创建（或者该用户已经不存在数据库中了）
+            if(user == null){
+                System.out.println("有篇文章没有用户创建");
+                continue;
+            }
+
+            //把QuestionDTO和User中的相关属性拷贝到QuestionDTO中
+            QuestionDTO questionDTO= new QuestionDTO();
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setUser(user);
+
+
+            //得到正文内容，然后删除html的部分
+            String descript = questionDTO.getDescription();
+            descript = htmlProccess.delHTMLTag(descript);
+
+            //去前n个字符
+            Integer length = descript.length();
+            if(length>showLength){
+                descript = descript.substring(0,showLength-1);
+                descript+="......";
+            }
+
+            questionDTO.setDescription(descript);
+
+            questionDTOList.add(questionDTO);
+        }
+
+
+
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setQuestionDTOList(questionDTOList);
+        pageDTO.setFirstPage(pageInfo.isIsFirstPage());
+        pageDTO.setLastPage(pageInfo.isIsLastPage());
+        pageDTO.setNextPage(pageInfo.isHasNextPage());
+        pageDTO.setPrePage(pageInfo.isHasPreviousPage());
+        pageDTO.setCurrentPage(pageInfo.getPageNum());
+        pageDTO.setTotalPage(pageInfo.getPages());
+
+
+
+        pageDTO.setPages(pageInfo.getNavigatepageNums());
+
+        return  pageDTO;
+
+    }
+
+
+
+
+
+
+    public List<Question> getAll(){
+        return questionMapper.getList();
+    }
+
+
+
+
+    //分页显示,其中会对搜索进行模糊匹配
     public PageDTO getList(Integer page, Integer size, String search) {
 
         String orderBy = "gmt_modified" + " desc";
@@ -304,14 +483,6 @@ public class QuestionService {
         questionMapper.update(question);
 
     }
-
-
-
-
-
-
-
-
 
 
 

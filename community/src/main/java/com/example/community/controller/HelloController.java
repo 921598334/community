@@ -2,6 +2,8 @@ package com.example.community.controller;
 
 
 import com.example.community.advice.CustomizeException;
+import com.example.community.cache.HotTagCache;
+import com.example.community.cache.TagCache;
 import com.example.community.dto.PageDTO;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
@@ -46,12 +48,17 @@ public class HelloController {
                            Model model,
                            @RequestParam(name="page",defaultValue="1") Integer page,
                            @RequestParam(name="size",defaultValue="5") Integer size,
-                           @RequestParam(name="search",required = false) String search
+                           @RequestParam(name="search",defaultValue = "") String search,
+                           @RequestParam(name="tag",defaultValue = "") String tag,
+                           @RequestParam(name="isChecked",defaultValue = "false") boolean isChecked
     ) {
 
 
 
 
+
+
+        //用户是否登陆判断
         User user = (User) request.getSession().getAttribute("user");
         if (user != null){
             Integer count = notificationService.unReadCount(user.getId());
@@ -59,25 +66,54 @@ public class HelloController {
         }
 
 
+        //当点击左上角的回到主页时，相当于清楚所有的条件搜索
+        if(tag.equals("") && search.equals("")){
+            model.addAttribute("tag","");
+            model.addAttribute("search","");
+        }
 
 
-        request.getSession().setAttribute("search",search);
+
+        //当标签或者查询条件更新时
+        if(!tag.equals("")){
+            if(isChecked==false){
+                model.addAttribute("tag",tag);
+            }else {
+                model.addAttribute("tag","");
+                tag = "";
+            }
+
+        }
+
+
+        if(!search.equals("")){
+            model.addAttribute("search",search);
+        }
+
+
 
         PageDTO pageDTO = null;
-        //从数据库中得到分页的数据
-        pageDTO = questionService.getList(page,size,search);
+
+        pageDTO = questionService.getListByTagAndSearch(page,size,tag,search);
 
 
 
         model.addAttribute("pageDTO",pageDTO);
 
 
+        //热门标签
+        model.addAttribute("tagResult",HotTagCache.tagResult);
 
-        //throw new CustomizeException("测试异常功能了");
+
+
 
         //这个表示寻找index的页面进行显示,不用redirect表示返回页面（浏览器的url不会修改）,同时不会走controller,也就意味着页面中的变量可能没有值
         return "index";
     }
+
+
+
+
 
 
 }

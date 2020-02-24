@@ -50,4 +50,13 @@ public interface QuestionMapper {
     List<Question> findQuestionsByTag(@Param("tag") String tag,@Param("id") Integer id);
 
 
+    //根据标签得到问题,通过正则表达式的方式要得到输入的tag满足心如：xxx|xxxx|xxx|xx,这样可以在数据的标签中匹配至包括xxx字段的标签
+    @Select("select * from question where tag regexp #{tag} ")
+    List<Question> findAllQuestionsByTag(@Param("tag") String tag);
+
+
+
+    @Select("select * from question where tag regexp #{tag} and title regexp #{search}")
+    List<Question> findAllQuestionsByTagAndSearch(@Param("tag") String tag,@Param("search") String search);
+
 }

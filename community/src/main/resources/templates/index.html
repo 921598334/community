@@ -81,31 +81,31 @@
                 <ul class="pagination">
 
                     <li th:if="${not pageDTO.isFirstPage()}">
-                        <a  aria-label="Previous" th:href="@{/index(page=1,search=${session.search})}">
+                        <a  aria-label="Previous" th:href="@{/index(page=1,search=${search},tag=${tag})}">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
                     </li>
 
                     <li th:if="${pageDTO.isPrePage()}">
-                        <a  aria-label="Previous" th:href="@{/index(page=${pageDTO.currentPage-1},search=${session.search})}">
+                        <a  aria-label="Previous" th:href="@{/index(page=${pageDTO.currentPage-1},search=${search},tag=${tag})}">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
 
 
                     <li th:class="${pageDTO.currentPage==page} ? 'active':''" th:each="page:${pageDTO.pages}">
-                        <a th:href="@{/index(page=${page},search=${session.search})}" th:text="${page}" ></a>
+                        <a th:href="@{/index(page=${page},search=${search},tag=${tag})}" th:text="${page}" ></a>
                     </li>
 
 
                     <li th:if="${pageDTO.isNextPage()}">
-                        <a  aria-label="Previous" th:href="@{/index(page=${pageDTO.currentPage+1},search=${session.search})}">
+                        <a  aria-label="Previous" th:href="@{/index(page=${pageDTO.currentPage+1},search=${search},tag=${tag})}">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
 
                     <li th:if="${not pageDTO.isLastPage()}">
-                        <a aria-label="Previous" th:href="@{/index(page=${pageDTO.totalPage})}">
+                        <a aria-label="Previous" th:href="@{/index(page=${pageDTO.totalPage},search=${search},tag=${tag})}">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>
@@ -121,8 +121,13 @@
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h4>热门标签</h4>
-                <a
-                   ></a>
+
+                    <li th:each="currentTag:${tagResult}" th:class="${currentTag==tag} ? 'bg-success':''">
+
+                        <a th:href="@{/index(page=1,tag=${currentTag},search=${search},isChecked=${currentTag==tag})}" th:text="${currentTag}"></a>
+
+                    </li>
+
             </div>
             <div ></div>
         </div>
